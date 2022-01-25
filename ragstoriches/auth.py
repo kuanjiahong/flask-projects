@@ -23,6 +23,9 @@ user_info = {
 
 @bp.route('/register', methods=['GET', 'POST'])
 def register():
+    if g.user:
+        return redirect(url_for('index'))
+
     if request.method == 'POST':
         username = request.form['username']
         email = request.form['email']
@@ -65,6 +68,9 @@ def register():
 
 @bp.route('/login', methods=["GET","POST"])
 def login():
+    if g.user:
+        return redirect(url_for("index"))
+        
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
