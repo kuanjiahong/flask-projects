@@ -137,15 +137,24 @@ def update():
 @bp.before_app_request
 def load_character():
     character_id = session.get('character_id')
+    user_id = session.get('user_id')
 
-    if character_id is None:
+    if character_id is None and user_id is None:
         g.character = None
     
-    else:
+    elif user_id is not None:
         db = get_db()
-        the_object_id = ObjectId(character_id)
-        query = {"_id": the_object_id}
-        g.character= db.character.find_one(query)
+        the_user_object_id = ObjectId(user_id)
+        result = db.character.find_one({"user_id": the_user_object_id})
+        if result is not None:
+            g.character = result
+    
+    elif character_id is not None:
+        db = get_db()
+        the_character_object_id = ObjectId(character_id)
+        g.character = db.character.find_one({"_id": the_character_object_id})
+
+    if g.character:
         show_character = {
             "Name": g.character['name'],
             "Funds": g.character['funds']
