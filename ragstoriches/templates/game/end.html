@@ -1,0 +1,13 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}
+    End
+{% endblock %}
+
+{% block main %}
+    <p>Game Over</p>
+    {% for field in result %}
+        <p>{{ field }} : {{ result[field] }}</p>
+    {% endfor %}
+
+{% endblock %}

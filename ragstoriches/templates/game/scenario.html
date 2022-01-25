@@ -1,0 +1,21 @@
+{% extends "layouts/base.html" %}
+
+<!-- https://jinja.palletsprojects.com/en/3.0.x/templates/#template-inheritance -->
+
+{% import 'helper/forms.html' as forms %}
+
+{% block title %}
+    {{ scenario }}
+{% endblock %}
+
+{% block main %}
+    <h1>Scenario {{ scenario }}</h1>
+    {% if scenario == 1 %}
+        {% include "questions/1.html" %}
+    {% elif scenario == 2 %}
+        {% include "questions/2.html" %}
+    {% endif %}
+
+    {{ forms.decisions(url_for('scenario', scenario=scenario), 'yes', "Yes") }}
+    {{ forms.decisions(url_for('scenario', scenario=scenario), 'no', "No") }}
+{% endblock %}

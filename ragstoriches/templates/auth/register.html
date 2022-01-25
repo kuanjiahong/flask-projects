@@ -1,0 +1,13 @@
+{% extends 'layouts/base.html' %}
+
+{% import 'helper/forms.html' as forms %}
+
+{% block title %}
+    Register
+{% endblock %}
+
+{% block main %}
+    <div class="vh-100 d-flex align-items-center justify-content-center">
+        {{ forms.authentication("Register") }}
+    </div>
+{% endblock %}

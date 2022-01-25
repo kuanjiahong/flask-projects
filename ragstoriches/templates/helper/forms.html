@@ -1,0 +1,62 @@
+<!-- for authentication -->
+{% macro authentication(text) %}
+    <form class="needs-validation" method="post" novalidate>
+        <div class="mb-3">
+            <label for="username" class="form-label">User Name</label>
+            <input class="form-control" type="text" name="username" required>
+            <div class="invalid-feedback">
+                Please input an user name
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input class="form-control" type="email" name="email" required>
+            <div class="invalid-feedback">
+                Please input an email
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input class="form-control" type="password" name="password" required>
+            <div class="invalid-feedback">
+                Please input password
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">{{ text }}</button>
+    </form>
+{%- endmacro %}
+
+
+
+<!-- For game -->
+
+<!-- For character creation -->
+{% macro character_creation_or_update(text, value='', money='') %}
+    <form class="needs-validation" method="post" novalidate>
+        <div class="mb-3">
+            <label for="name" class="form-label">Character Name</label>
+            <input class="form-control" type="text" value="{{ value|e }}" placeholder="John Wick" name="name" required>
+            <div class="invalid-feedback">
+                Please input a name for the character
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="funds" class="form-label">Funds</label>
+            <input class="form-control" type="number" value="{{ money|e }}" name="funds" min="0" max="10000" step="1" required>
+            <div class="invalid-feedback">
+                Please input a positive integer number
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">{{ text }}</button>
+    </form>
+{%- endmacro %}
+
+
+
+<!-- For scenarios -->
+{% macro decisions(url, value, text) %}
+    <form class="mb-3" action="{{ url }}" method="post">
+        <input type="hidden" value="{{ value|e }}" name="choice">
+        <button type="submit" class="btn btn-primary">{{ text|e }}</button>
+    </form>
+{%- endmacro %}

@@ -1,0 +1,12 @@
+{% extends "layouts/base.html" %}
+
+{% import 'helper/forms.html' as forms %}
+
+{% block title %}
+    Begin
+{% endblock %}
+
+{% block main %}
+    <h1>Game of Life</h1>
+        {{ forms.decisions(url_for('index'), "play", "Play") }}
+{% endblock %}

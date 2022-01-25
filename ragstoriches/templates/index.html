@@ -1,0 +1,11 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}
+    Welcome
+{% endblock %}
+
+{% block main %}
+    <h1>Rags to Riches</h1>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum recusandae ipsa in adipisci dolorem praesentium eaque. Distinctio quo veritatis numquam.</p>
+    <a href="{{ url_for('game_of_life.begin') }}" class="btn btn-primary">Play</a>
+{% endblock %}

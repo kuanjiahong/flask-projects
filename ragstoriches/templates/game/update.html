@@ -1,0 +1,12 @@
+{% extends "layouts/base.html" %}
+
+{% import 'helper/forms.html' as forms %}
+
+{% block title %}
+    Update
+{% endblock %}
+
+{% block main %}
+    <h1>Character Creation</h1>
+        {{ forms.character_creation_or_update("Update", character_info['name'], character_info['funds']) }}
+{% endblock %}
