@@ -100,10 +100,8 @@ def load_logged_in_user():
     
     else:
         db = get_db()
-        the_object_id = ObjectId(user_id)
-        query = {"_id": the_object_id}
-        g.user = db.user.find_one(query)
-    
+        the_user_object_id = ObjectId(user_id)
+        g.user = db.user.find_one({"_id": the_user_object_id})
 
 @bp.route('/logout')
 def logout():
