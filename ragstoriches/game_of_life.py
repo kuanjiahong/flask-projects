@@ -45,7 +45,7 @@ def create():
 
     if find_character is not None:
         error_message = "You already created a character"
-        flash(error_message)
+        flash(error_message, 'error')
         return redirect(url_for('game_of_life.begin'))
 
 
@@ -76,11 +76,11 @@ def create():
         character_id = db.character.insert_one(character_info).inserted_id
         session['character_id'] = str(character_id)
         success_message = "Character created!"
-        flash(success_message)
+        flash(success_message, 'success')
         return redirect(url_for('game_of_life.begin'))
 
     if error_message is not None:
-        flash(error_message)
+        flash(error_message, 'error')
     
     return render_template('game/create.html')
 
@@ -96,7 +96,7 @@ def update():
 
     if find_character is None:
         error_message = "No character found"
-        flash(error_message)
+        flash(error_message, 'error')
         return redirect(url_for('game_of_life.begin'))
     
 
@@ -125,7 +125,7 @@ def update():
         value = {"$set": character_info}
         db.character.update_one(query, value)
         success_message = "Character updated!"
-        flash(success_message)
+        flash(success_message, 'success')
         return redirect(url_for('game_of_life.begin'))
 
     
