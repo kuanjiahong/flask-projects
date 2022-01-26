@@ -51,6 +51,35 @@
     </form>
 {%- endmacro %}
 
+<!-- For deleting a character -->
+{% macro restart() %}
+    <!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#deleteModal">
+    Restart
+  </button>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Restart</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          This will delete your character and restart from the beginning again. Are you sure?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <form method="post">
+            <input type="hidden" value="restart" name="choice">
+            <button type="submit" class="btn btn-danger">Restart</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{%- endmacro %}
 
 
 <!-- For scenarios -->

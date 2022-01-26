@@ -4,10 +4,13 @@
     End
 {% endblock %}
 
+{% import 'helper/forms.html' as forms %}
+
+
 {% block main %}
-    <p>Game Over</p>
+    <h1>Game Over</h1>
     {% for field in result %}
         <p>{{ field }} : {{ result[field] }}</p>
     {% endfor %}
-
+    {{ forms.restart() }}
 {% endblock %}

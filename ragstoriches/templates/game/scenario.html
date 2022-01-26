@@ -18,6 +18,35 @@
         {% include "questions/2.html" %}
         {{ forms.decisions('fund', "Fund") }}
         {{ forms.decisions('course', "Course") }}
+    {% elif scenario == 3 %}
+        {% include "questions/3.html" %}
+        {{ forms.decisions('branded', "Branded") }}
+        {{ forms.decisions('non-branded', "Non-branded") }}
+    {% elif scenario == 4 %}
+        {% include "questions/4.html" %}
+        {{ forms.decisions('promotion', "$1000 salary with promotion") }}
+        {{ forms.decisions('no-promotion', "$2000 salary with no promotion") }}
+    {% elif scenario == 5 %}
+        {% include "questions/5.html" %}
+        {{ forms.decisions('posh', "Posh restaurant") }}
+        {{ forms.decisions('cheaper', "Cheap dining") }}
+    {% elif scenario == 6 %}
+        {% include "questions/6.html" %}
+        {{ forms.decisions('nasdaq', "NASDAQ") }}
+        {{ forms.decisions('insurance', "Insurance") }}
+    {% elif scenario == 7 %}
+        {% include "questions/7.html" %}
+        {% if character_info['insurance'] == 0 %}
+            {{ forms.decisions('insurance', "Buy Insurance") }}
+            {{ forms.decisions('rent', "Rent a house") }}
+        {% elif character_info['insurance'] > 0 %}
+            {{ forms.decisions('car', "Buy car") }}
+            {{ forms.decisions('public-transport', "Public Transport") }}
+        {% endif %}
+    {% elif scenario == 8 %}
+        {% include "questions/8.html" %}
+        {{ forms.decisions('savings', "Savings") }}
+        {{ forms.decisions('fixed-deposit', "Fixed Deposit") }}
     {% endif %}
 
     <p>Current fund: {{ character_info['funds'] }}</p>  

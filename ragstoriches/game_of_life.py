@@ -6,7 +6,7 @@ from flask import (
     Blueprint, current_app, flash, g, redirect, render_template, request, url_for, session
 )
 from werkzeug.exceptions import abort
-from ragstoriches.auth import login_required
+from ragstoriches.auth import login, login_required
 from ragstoriches.db import get_db
 
 bp = Blueprint('game_of_life', __name__)
@@ -47,6 +47,7 @@ def scenarios(scenario):
     user_id = ObjectId(session['user_id'])
     query = {"_id": character_id, "user_id": user_id}
     character_info = db.character.find_one(query)
+
     if character_info is None:
         error_message = "Character not found"
         flash(error_message, 'error')
@@ -63,55 +64,220 @@ def scenarios(scenario):
 
     
     if request.method == 'POST':
+
         choice = request.form['choice']
+
         if choice is None:
             error_message = "Please make a decision"
             flash(error_message, 'error')
             return redirect(url_for('scenarios', scenario=scenario))
 
+        plus = False
+        minus = False
+        money = 0
+        investment_value = character_info['insurance']
+        insurance_value = character_info['investment']
         current_funds = character_info['funds']
+
         if scenario == 1:
+            money = 600
             if choice == 'yes':
-                new_funds = current_funds + 600
-                value = {"$set": {"funds": new_funds, "progress": 2}}
-                db.character.update_one(query, value)
-                updated_character_info = db.character.find_one(query)
-                return redirect(url_for('game_of_life.scenarios',scenario=updated_character_info['progress']))
+                plus = True
+                current_funds += money
             elif choice == 'no':
-                value = {"$set": {"progress": 2}}
-                db.character.update_one(query, value)
-                updated_character_info = db.character.find_one(query)
-                return redirect(url_for('game_of_life.scenarios',scenario=updated_character_info['progress']))
+                minus = True
+                current_funds -= money
             else:
                 error_message = "Invalid choice"
                 flash(error_message, 'error')
                 return redirect(url_for('game_of_life.scenarios',scenario=scenario))
         
         if scenario == 2:
+            money = 200
             if choice == 'fund':
-                new_funds = current_funds + 200
-                value = {"$set": {"funds": new_funds, "progress": 3}}
-                db.character.update_one(query, value)
-                updated_character_info = db.character.find_one(query)
-                return redirect(url_for('game_of_life.scenarios',scenario=updated_character_info['progress']))
+                plus = True
+                current_funds += money
             elif choice == 'course':
-                new_funds = current_funds - 200
-                value = {"$set": {"funds": new_funds, "progress": 3}}
-                db.character.update_one(query, value)
-                updated_character_info = db.character.find_one(query)
-                return redirect(url_for('game_of_life.scenarios',scenario=updated_character_info['progress']))
+                minus = True
+                current_funds -= money
             else:
                 error_message = "Invalid choice"
                 flash(error_message, 'error')
                 return redirect(url_for('game_of_life.scenarios',scenario=scenario))
         
         if scenario == 3:
-            pass
+            minus = True
+            if choice == 'branded':
+                money = 500
+                current_funds -= money
+            elif choice == 'non-branded':
+                money = 200
+                current_funds -= money
+            else:
+                error_message = "Invalid choice"
+                flash(error_message, 'error')
+                return redirect(url_for('game_of_life.scenarios',scenario=scenario))
+
+        if scenario == 4:
+            plus = True
+            if choice == 'promotion':
+                money = 1000
+                current_funds += money
+            elif choice == 'no-promotion':
+                money = 2000
+                current_funds += money
+            else:
+                error_message = "Invalid choice"
+                flash(error_message, 'error')
+                return redirect(url_for('game_of_life.scenarios',scenario=scenario))
+        
+        if scenario == 5:
+            minus = True
+            if choice == 'posh':
+                money = 500 + 100
+                current_funds -= money
+            elif choice == 'cheaper':
+                money = 300 + 100
+                current_funds -+ money
+            else:
+                error_message = "Invalid choice"
+                flash(error_message, 'error')
+                return redirect(url_for('game_of_life.scenarios',scenario=scenario))
+
+            current_funds = 10000 # the next scenario (6) will say that we have 10000 left
+
+        if scenario == 6:
+            minus = True
+            money = 1000
+            if choice == 'nasdaq':
+                current_funds -= money
+                investment_value += money
+            elif choice == 'insurance':
+                current_funds -= money
+                insurance_value += money
+            else:
+                error_message = "Invalid choice"
+                flash(error_message, 'error')
+                return redirect(url_for('game_of_life.scenarios',scenario=scenario))
+            
+            current_funds = 12000 # the next scenario which is 7 will say that we have 12000 left
+        
+        if scenario == 7:
+            if choice == 'insurance':
+                minus = True
+                money = 1000
+                current_funds -= money
+                insurance_value += money
+            elif choice == 'rent':
+                minus = True
+                money = 1000
+                current_funds -= money
+            elif choice == 'car':
+                minus = True
+                money = 90000
+                current_funds -= money
+            elif choice == 'public-transport':
+                plus = True
+                money = 0
+                current_funds += money
+            else:
+                error_message = "Invalid choice"
+                flash(error_message, 'error')
+                return redirect(url_for('game_of_life.scenarios',scenario=scenario))
+
+            current_funds = 6000 # scenario 8 will give us 6000 cash surplus
+
+        if scenario == 8: # the last question
+            if choice == 'savings':
+                pass
+            elif choice == 'fixed-deposit':
+                pass
+            else:
+                error_message = "Invalid choice"
+                flash(error_message, 'error')
+                return redirect(url_for('game_of_life.scenarios',scenario=scenario))
+
+            value = {
+                "$set": {
+                    "funds": current_funds,   
+                    "end": True
+                }
+            }
+
+            db.character.update_one(query, value)
+
+            return redirect(url_for('game_of_life.end'))
 
 
 
+        value = {
+            "$set": {
+                "funds": current_funds, 
+                "progress": scenario + 1, 
+                "investment": investment_value, 
+                "insurance": insurance_value
+                }
+        }
+
+        db.character.update_one(query, value)
+
+        updated_character_info = db.character.find_one(query)
+
+        if plus == True:
+            plus_message=f"You gained ${money}"
+            flash(plus_message, 'plus')
+        elif minus == True:
+            minus_message = f'You lost ${money}'
+            flash(minus_message, 'minus')
+        
+        return redirect(url_for('game_of_life.scenarios',scenario=updated_character_info['progress']))
+        
 
     return render_template('game/scenario.html', scenario=character_info['progress'], character_info=character_info)
+
+
+@bp.route('/end', methods=['GET','POST'])
+@login_required
+def end():
+
+    db = get_db()
+    character_id = ObjectId(session['character_id'])
+    user_id = ObjectId(session['user_id'])
+    query = {"_id": character_id, "user_id": user_id}
+    character_info = db.character.find_one(query)
+
+    if character_info is None:
+        error_message = "Character not found"
+        flash(error_message, 'error')
+        return redirect(url_for('game_of_life.begin'))
+    
+    if character_info['end'] == False:
+        error_message = "Your game hasn't ended yet"
+        flash(error_message, 'error')
+        return redirect(url_for('game_of_life.begin'))
+    
+    if request.method == 'POST':
+        choice = request.form['choice']
+        if choice is None:
+            error_message = "Invalid input"
+            flash(error_message, 'error')
+            return redirect(url_for('game_of_life.end'))
+        
+        if choice == 'restart':
+            db.character.delete_one(query)
+            success_message = "Game restarted"
+            flash(success_message, 'success')
+            return redirect(url_for('game_of_life.begin'))
+
+    display_result = {
+        "Name": character_info['name'],
+        "Available Funds": character_info['funds'],
+        "Insurance": character_info['insurance'],
+        "Investment value": character_info['investment']
+    }
+
+    return render_template('game/end.html', result=display_result)
+    
 
 
 @bp.route('/create', methods=['GET', 'POST'])
@@ -235,7 +401,7 @@ def load_character():
         the_character_object_id = ObjectId(character_id)
         g.character = db.character.find_one({"_id": the_character_object_id})
 
-    if g.character:
+    if getattr(g, 'character', None) is not None:
         show_character = {
             "Name": g.character['name'],
             "Funds": g.character['funds']
