@@ -63,20 +63,55 @@ def scenarios(scenario):
 
     
     if request.method == 'POST':
+        choice = request.form['choice']
+        if choice is None:
+            error_message = "Please make a decision"
+            flash(error_message, 'error')
+            return redirect(url_for('scenarios', scenario=scenario))
+
+        current_funds = character_info['funds']
         if scenario == 1:
-            choice = request.form['choice']
-            if choice is None:
-                error_message = "Please make a decision"
-                flash(error_message, 'error')
-                return redirect(url_for('scenarios', scenario=scenario))
             if choice == 'yes':
-                current_funds = character_info['funds']
                 new_funds = current_funds + 600
-                value = {"$set": {"funds": new_funds}}
+                value = {"$set": {"funds": new_funds, "progress": 2}}
                 db.character.update_one(query, value)
+                updated_character_info = db.character.find_one(query)
+                return redirect(url_for('game_of_life.scenarios',scenario=updated_character_info['progress']))
+            elif choice == 'no':
+                value = {"$set": {"progress": 2}}
+                db.character.update_one(query, value)
+                updated_character_info = db.character.find_one(query)
+                return redirect(url_for('game_of_life.scenarios',scenario=updated_character_info['progress']))
+            else:
+                error_message = "Invalid choice"
+                flash(error_message, 'error')
+                return redirect(url_for('game_of_life.scenarios',scenario=scenario))
+        
+        if scenario == 2:
+            if choice == 'fund':
+                new_funds = current_funds + 200
+                value = {"$set": {"funds": new_funds, "progress": 3}}
+                db.character.update_one(query, value)
+                updated_character_info = db.character.find_one(query)
+                return redirect(url_for('game_of_life.scenarios',scenario=updated_character_info['progress']))
+            elif choice == 'course':
+                new_funds = current_funds - 200
+                value = {"$set": {"funds": new_funds, "progress": 3}}
+                db.character.update_one(query, value)
+                updated_character_info = db.character.find_one(query)
+                return redirect(url_for('game_of_life.scenarios',scenario=updated_character_info['progress']))
+            else:
+                error_message = "Invalid choice"
+                flash(error_message, 'error')
+                return redirect(url_for('game_of_life.scenarios',scenario=scenario))
+        
+        if scenario == 3:
+            pass
 
 
-    return render_template('game/scenario.html', scenario=character_info['progress'])
+
+
+    return render_template('game/scenario.html', scenario=character_info['progress'], character_info=character_info)
 
 
 @bp.route('/create', methods=['GET', 'POST'])

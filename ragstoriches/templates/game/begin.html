@@ -8,5 +8,11 @@
 
 {% block main %}
     <h1>Game of Life</h1>
-        {{ forms.decisions("play", "Play") }}
+        {% if g.character['progress'] > 0 %}
+            <a class="btn btn-primary" href="{{ url_for('game_of_life.scenarios',scenario=g.character['progress']) }}">
+                Continue
+            </a>
+        {% else %}
+            {{ forms.decisions("play", "Play") }}
+        {% endif %}
 {% endblock %}

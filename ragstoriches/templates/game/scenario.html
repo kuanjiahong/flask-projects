@@ -12,10 +12,13 @@
     <h1>Scenario {{ scenario }}</h1>
     {% if scenario == 1 %}
         {% include "questions/1.html" %}
+        {{ forms.decisions('yes', "Yes") }}
+        {{ forms.decisions('no', "No") }}
     {% elif scenario == 2 %}
         {% include "questions/2.html" %}
+        {{ forms.decisions('fund', "Fund") }}
+        {{ forms.decisions('course', "Course") }}
     {% endif %}
 
-    {{ forms.decisions('yes', "Yes") }}
-    {{ forms.decisions('no', "No") }}
+    <p>Current fund: {{ character_info['funds'] }}</p>  
 {% endblock %}
