@@ -53,7 +53,7 @@ def register():
             if result is None:
                 db.user.insert_one(user_info)
                 success_message = "Registration success!"
-                flash(success_message)
+                flash(success_message, 'success')
                 return redirect(url_for("auth.login"))
 
             else:
@@ -61,7 +61,7 @@ def register():
         
         
         if error_message is not None:
-            flash(error_message)
+            flash(error_message, 'error')
     
     
     return render_template('auth/register.html')
@@ -89,11 +89,11 @@ def login():
             session.clear()
             session['user_id'] = str(user['_id'])
             success_message = "Login success!"
-            flash(success_message)
+            flash(success_message, 'success')
             return redirect(url_for('game_of_life.begin'))
         
         if error_message is not None:
-            flash(error_message)
+            flash(error_message, 'error')
     
     return render_template('auth/login.html')
 
@@ -112,6 +112,8 @@ def load_logged_in_user():
 @bp.route('/logout')
 def logout():
     session.clear()
+    success_message = "You are logged out"
+    flash(success_message, 'success')
     return redirect(url_for('index'))
 
 def login_required(view):
