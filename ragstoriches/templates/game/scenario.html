@@ -16,6 +16,6 @@
         {% include "questions/2.html" %}
     {% endif %}
 
-    {{ forms.decisions(url_for('scenario', scenario=scenario), 'yes', "Yes") }}
-    {{ forms.decisions(url_for('scenario', scenario=scenario), 'no', "No") }}
+    {{ forms.decisions('yes', "Yes") }}
+    {{ forms.decisions('no', "No") }}
 {% endblock %}

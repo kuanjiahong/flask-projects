@@ -1,3 +1,5 @@
+from crypt import methods
+from distutils.log import error
 from bson import ObjectId
 from datetime import datetime
 from flask import (
@@ -15,8 +17,13 @@ bp = Blueprint('game_of_life', __name__)
 def begin():
     db = get_db()
     if request.method == 'POST':
-        # TODO
-        pass
+        character_id = ObjectId(session['character_id'])
+        user_id = ObjectId(session['user_id'])
+        query = {"_id": character_id, "user_id": user_id}
+        value = {"$set": {"progress": 1}}
+        db.character.update_one(query, value)
+        find_character= db.character.find_one(query)
+        return redirect(url_for('game_of_life.scenarios', scenario=find_character['progress']))
 
 
     user_id = ObjectId(session['user_id'])
@@ -31,6 +38,45 @@ def begin():
     
 
     return render_template('game/begin.html')
+
+@bp.route('/scenarios/<int:scenario>', methods=['GET','POST'])
+@login_required
+def scenarios(scenario):
+    db = get_db()
+    character_id = ObjectId(session['character_id'])
+    user_id = ObjectId(session['user_id'])
+    query = {"_id": character_id, "user_id": user_id}
+    character_info = db.character.find_one(query)
+    if character_info is None:
+        error_message = "Character not found"
+        flash(error_message, 'error')
+        return redirect(url_for('game_of_life.begin'))
+    
+    elif character_info['progress'] == 0:
+        error_message = "Please click the play button to proceed"
+        flash(error_message, 'error')
+        return redirect(url_for('game_of_life.begin'))
+
+    elif character_info['progress'] != scenario:
+        flash("Redirected back", 'error')
+        return redirect(url_for('game_of_life.scenarios', scenario=character_info['progress']))
+
+    
+    if request.method == 'POST':
+        if scenario == 1:
+            choice = request.form['choice']
+            if choice is None:
+                error_message = "Please make a decision"
+                flash(error_message, 'error')
+                return redirect(url_for('scenarios', scenario=scenario))
+            if choice == 'yes':
+                current_funds = character_info['funds']
+                new_funds = current_funds + 600
+                value = {"$set": {"funds": new_funds}}
+                db.character.update_one(query, value)
+
+
+    return render_template('game/scenario.html', scenario=character_info['progress'])
 
 
 @bp.route('/create', methods=['GET', 'POST'])

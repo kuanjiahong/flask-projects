@@ -54,8 +54,8 @@
 
 
 <!-- For scenarios -->
-{% macro decisions(url, value, text) %}
-    <form class="mb-3" action="{{ url }}" method="post">
+{% macro decisions(value, text) %}
+    <form class="mb-3" method="post">
         <input type="hidden" value="{{ value|e }}" name="choice">
         <button type="submit" class="btn btn-primary">{{ text|e }}</button>
     </form>
