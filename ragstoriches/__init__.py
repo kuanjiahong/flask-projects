@@ -5,7 +5,11 @@ from flask import Flask, render_template, url_for
 def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
-    app.config.from_pyfile('settings.cfg', silent=True)
+    
+    if app.config["ENV"] == 'production':
+        app.config.from_pyfile('prod_settings.cfg', silent=True)
+    elif app.config["ENV"] == 'development':
+        app.config.from_pyfile('dev_settings.cfg', silent=True)
     
     if test_config is None:
         # load the instance config, if it exists, when not testing
