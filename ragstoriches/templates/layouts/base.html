@@ -19,11 +19,31 @@
 
     {% include "layouts/nav.html" %}
 
-    {% for message in get_flashed_messages() %}
-      <div>{{ message }}</div>
-    {% endfor %}
 
     <main class="container-md vh-100">
+    
+      {% with errors = get_flashed_messages(category_filter=["error"]) %}
+        {% if errors %}
+          <div class="alert alert-danger alert-dismissible fade show" role="alert">
+              {%- for msg in errors %}
+                {{ msg }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              {% endfor -%}
+          </div>
+        {% endif %}
+      {% endwith %}
+
+      {% with success = get_flashed_messages(category_filter=["success"]) %}
+      {% if success %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {%- for msg in success %}
+              {{ msg }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            {% endfor -%}
+        </div>
+      {% endif %}
+    {% endwith %}
+
         {% block main %}{% endblock %}
     </main>
 
