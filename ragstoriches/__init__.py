@@ -28,6 +28,10 @@ def create_app(test_config=None):
     from . import game_of_life
     app.register_blueprint(game_of_life.bp)
     
+    @app.route('/')
+    def index():
+        return render_template('index.html')
+
     @app.route('/acknowledgement')
     def acknowledgement():
         return render_template('acknowledgement.html')
