@@ -7,7 +7,7 @@ from flask import (
 )
 from werkzeug.exceptions import abort
 from ragstoriches.auth import login, login_required
-from ragstoriches.db import get_db
+from ragstoriches.database import get_db
 
 bp = Blueprint('game_of_life', __name__)
 
