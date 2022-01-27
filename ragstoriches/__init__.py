@@ -7,13 +7,13 @@ def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
 
     if app.config["ENV"] == 'production':
-        app.config.from_pyfile('prod_settings.cfg', silent=True)
+        app.config.from_pyfile('prod_settings.cfg')
     elif app.config["ENV"] == 'development':
-        app.config.from_pyfile('dev_settings.cfg', silent=True)
+        app.config.from_pyfile('dev_settings.cfg')
     
     if test_config is not None:
         # load the test config if passed in
-        app.config.from_mapping(test_config)
+        app.config.from_pyfile('testing_settings.cfg')
     
     # ensure the instance folder exist
     try:
@@ -27,12 +27,6 @@ def create_app(test_config=None):
 
     from . import game_of_life
     app.register_blueprint(game_of_life.bp)
-
-    
-
-    @app.route('/')
-    def index():
-        return render_template('index.html')
     
     @app.route('/acknowledgement')
     def acknowledgement():
