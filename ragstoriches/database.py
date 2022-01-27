@@ -48,6 +48,7 @@ def add_user(name, email, password):
         "email": email, 
         "password": generate_password_hash(password),
         "created_at": datetime.now(),
+        "last_modified": datetime.now()
     }
     return db.user.insert_one(user)
 
