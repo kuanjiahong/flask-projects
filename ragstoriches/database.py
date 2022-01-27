@@ -39,6 +39,8 @@ def add_user(name, email, password):
     -'created_at'
 
     name, password and email will be retrieved from register form
+    
+    Return the result of "db.user.insert_one(user)"
     '''
 
     user = {
@@ -52,9 +54,10 @@ def add_user(name, email, password):
 def check_user(name, email, password):
     '''
     Check if the user exist in the user collection
-    return the user query if exist
-    else
-    return False
+
+    if exist return "db.user.find_one(details)" 
+    if not exist, return 0
+    if password is wrong, return 2
     '''
     details = {"name": name, "email": email}
     result = db.user.find_one(details)
@@ -70,12 +73,16 @@ def check_user(name, email, password):
 def get_user_by_oid(user_oid):
     '''
     Retrieve user details from collection by their object id
+
+    Return the user in python dictionary format
     '''
     return db.user.find_one({"_id": ObjectId(user_oid)})
 
 def get_user_by_email(email):
     '''
     Retrieve user details from collection by their email
+
+    return None if there is no user with the email given
     '''
     return db.user.find_one({"email": email})
 
