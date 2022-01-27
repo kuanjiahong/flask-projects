@@ -1,7 +1,7 @@
 {% import 'helper/wild_cases.html' as wild_cases %}
 
-{% if g.character['insurance'] > 0 %}
+{% if g.user['character']['insurance'] > 0 and g.user['character'].get('insurance') %}
     {{ wild_cases.fire_with_insurance() }}
-{% elif g.character['insurance'] == 0 %}
+{% elif g.character['insurance'] == 0 and g.user['character'].get('insurance') %}
     {{ wild_cases.fire_without_insurance() }}
 {% endif %}
