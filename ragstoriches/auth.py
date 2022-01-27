@@ -40,18 +40,20 @@ def register():
                 flash(error_message, 'error')
                 return redirect(url_for('auth.register'))
         
-        if error_message is not None:
+        else:
             flash(error_message, 'error')
+
+    if session.get('user_id'):
+        flash("You were logged in!", 'success')
+        return redirect(url_for("index"))
     
     return render_template('auth/register.html')
 
 @bp.route('/login', methods=["GET","POST"])
 def login():
-    if getattr(g,'user',None) is not None:
-        flash("You were logged in!", 'success')
-        return redirect(url_for("index"))
         
     if request.method == 'POST':
+
         name = request.form['username']
         password = request.form['password']
         email = request.form['email']
@@ -72,6 +74,7 @@ def login():
             success_message = "Login success!"
             flash(success_message, 'success')
             return redirect(url_for('game_of_life.begin'))
+
 
     return render_template('auth/login.html')
 
