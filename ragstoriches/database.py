@@ -47,6 +47,8 @@ def add_user(name, email, password):
         "name": name, 
         "email": email, 
         "password": generate_password_hash(password),
+        "progress": 0,
+        "end": False,
         "created_at": datetime.now(),
         "last_modified": datetime.now()
     }
@@ -88,23 +90,92 @@ def get_user_by_email(email):
     return db.user.find_one({"email": email})
 
 
-# def close_db(e=None):
-#     # Remove connection
-#     g.pop('db', None)
+def add_character(user_id, character_name, funds):
+    '''
+    Update a character into the user collection
 
-# def connect_db():
-#     db = get_db()
-#     if db is None:
-#         print("No connection")
-#     else:
-#         print("Connection success")
+    Return True upon success
 
-# @click.command('connect-db')
-# @with_appcontext
-# def connect_db_command():
-#     click.echo(connect_db())
+    else return error message
+    '''
+    query = {"_id": ObjectId(user_id)}
+    set_value = { 
+        "last_modified": datetime.now(),
+        "character":{ # this is a nested/embedded document
+            "name": character_name, 
+            "funds": funds, 
+        }
+    }
+    
+    try:
+        db.user.update_one(query, {"$set": set_value})
+    except Exception as e:
+        return e
+    
+    return True
 
 
-# def init_app(app):
-#     app.teardown_appcontext(close_db)
-#     app.cli.add_command(connect_db_command)
+def update_progress(user_id):
+    '''
+    Increment user progress by one
+
+    If success, return True
+    else, return error message
+    '''
+    query = {"_id": ObjectId(user_id)}
+    inc_value = {"progress": 1}
+    try:
+        db.user.update_one(query, {"$inc": inc_value})
+    except Exception as e:
+        return e
+
+    return True
+
+def update_character_fund_and_progress(user_id, new_value):
+    '''
+    Update character fund to the new_value
+
+    if success, return True
+
+    else return error message
+    '''
+    query = {"_id": ObjectId(user_id)}
+    set_value = {'character.funds': new_value}
+    inc_value = {'progress': 1} # increase by one
+    try:
+        db.user.update_one(query, {"$set": set_value, "$inc": inc_value})
+        return True
+    except Exception as e:
+        return e
+    
+def update_end(user_id):
+    '''
+    Mark the game as ended for the user
+
+    if success, return True
+    else return error message
+    '''
+    query = {"_id": ObjectId(user_id)}
+    set_value = {"end": True}
+    try:
+        db.user.update_one(query, {"$set": set_value})
+        return True
+    except Exception as e:
+        return e
+
+def delete_character(user_id):
+    '''
+    Delete the "character" field and set user progress to 0 and also set "end" to False
+
+    if success return True
+    else return error message
+    '''
+
+    query = {"_id": ObjectId(user_id)}
+    unset_value = {"character": ""}
+    set_value = {"progress": 0, "end": False}
+    try:
+        db.user.update_one(query, {"$unset": unset_value, "$set": set_value})
+        return True
+    except Exception as e:
+        return e
