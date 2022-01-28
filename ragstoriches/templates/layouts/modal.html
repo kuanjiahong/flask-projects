@@ -7,8 +7,8 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          {% for field in g.show_character %}
-            <p>{{ field }}: {{ g.show_character[field] }}</p>
+          {% for detail in g.user['character'] %}
+            <p>{{ detail.capitalize() }}: {{ g.user['character'][detail] }}</p>
           {% endfor %}
         </div>
         <div class="modal-footer">

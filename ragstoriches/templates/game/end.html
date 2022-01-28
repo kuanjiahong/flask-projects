@@ -9,8 +9,8 @@
 
 {% block main %}
     <h1>Game Over</h1>
-    {% for field in result %}
-        <p>{{ field }} : {{ result[field] }}</p>
+    {% for detail in g.user['character'] %}
+        <p>{{ detail.capitalize() }} : {{ g.user['character'][detail] }}</p>
     {% endfor %}
     {{ forms.restart() }}
 {% endblock %}
