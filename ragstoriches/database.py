@@ -5,18 +5,12 @@ https://www.mongodb.com/compatibility/setting-up-flask-with-mongodb
 
 '''
 
-import bson
-import click
-
 from flask import current_app, g
 from flask_pymongo import PyMongo
-from flask.cli import with_appcontext
 from werkzeug.local import LocalProxy
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from pymongo.errors import DuplicateKeyError, OperationFailure
 from bson.objectid import ObjectId
-from bson.errors import InvalidId
 
 from datetime import datetime
 
