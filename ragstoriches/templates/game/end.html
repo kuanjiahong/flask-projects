@@ -8,9 +8,11 @@
 
 
 {% block main %}
-    <h1>Game Over</h1>
-    {% for detail in g.user['character'] %}
-        <p>{{ detail.capitalize() }} : {{ g.user['character'][detail] }}</p>
-    {% endfor %}
-    {{ forms.restart() }}
+    <div class="text-center">
+        <h1>Game Over</h1>
+        {% for detail in g.user['character'] %}
+            <p>{{ detail.capitalize() }} : {{ g.user['character'][detail] }}</p>
+        {% endfor %}
+        {{ forms.restart() }}
+    </div>
 {% endblock %}
