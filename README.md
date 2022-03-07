@@ -8,7 +8,7 @@ A web game simulation of Game of Life with financial literacy as its theme
 3. Activate the virtual environment. For Windows: `.\env\Scripts\activate`. For Unix/macOS: `source env/bin/activate`
 4. pip install the require package by running this command in your terminal. Any OS is the same so just use this command line `pip install -r requirements.txt`
 6. Create a folder with name `instance`. (Note: this is important)
-7. Put the files in `samples` folder into the `instance` folder. 
+7. Put the files from `samples` folder into the `instance` folder. 
 8. In `prod_setting.cfg` in the `instance` folder, key in secret key of your choice. For simplicity sake, you can just put secret key as `abc123` for now but remember to change it to something more complex before deployment.
 9. For `MONGODB_URI`, you need to get the connection string from your MongoDB Atlas account.
 10. THE `samples` FOLDER SHOULD NEVER HAVE ANY CREDENTIALS. ALL CREDENTIALS MUST BE PUT INSIDE THE `instance` FOLDER.
