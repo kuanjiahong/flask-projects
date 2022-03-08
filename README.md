@@ -12,8 +12,8 @@ A web game simulation of Game of Life with financial literacy as its theme
 8. In `prod_setting.cfg` in the `instance` folder, key in secret key of your choice. For simplicity sake, you can just put secret key as `abc123` for now but remember to change it to something more complex before deployment.
 9. For `MONGODB_URI`, you need to get the connection string from your MongoDB Atlas account.
 10. THE `samples` FOLDER SHOULD NEVER HAVE ANY CREDENTIALS. ALL CREDENTIALS MUST BE PUT INSIDE THE `instance` FOLDER.
-11. After all of this is done, go to the terimninal and key in these commands. For CMD: `set FLASK_APP=ragstoriches`. For Bash: `EXPORT FLASK_APP=ragstoriches`.
-12. Then, key in these command to launch development mode. For CMD: `set FLASK_ENV=development`. For Bash: `EXPORT FLASK_ENV=development` 
+11. After all of this is done, go to the terimninal and key in these commands. For CMD: `set FLASK_APP=ragstoriches`. For Bash: `export FLASK_APP=ragstoriches`.
+12. Then, key in these command to launch development mode. For CMD: `set FLASK_ENV=development`. For Bash: `export FLASK_ENV=development` 
 13. Finally, type `flask run` and if everything is set, you would be able to view the website in your local computer.
 
 ## Testing
@@ -38,3 +38,8 @@ MongoDB Atlas Free tier
 1. [How to create and activate Python virtual enviroment](https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/#creating-a-virtual-environment)
 2. [Flask 2.0.2](https://flask.palletsprojects.com/en/2.0.x/)
 3. [MongoDB Atlas](https://www.mongodb.com/)
+
+
+## Some problems
+
+1. For some reason `test_factory.py` has some problem
