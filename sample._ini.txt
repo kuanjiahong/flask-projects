@@ -1,8 +1,0 @@
-[PROD]
-DB_URI = your_actual_db_uri (can be the same as Atlas, or a local MongoDB database)
-
-[DEV]
-DB_URI = your_developing_db_uri (can be the same as Atlas, or a local MongoDB database)
-
-[TEST]
-DB_URI = your_testing_db_uri (can be the same as Atlas, or a local MongoDB database)
