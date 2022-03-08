@@ -7,16 +7,18 @@
 {% endblock %}
 
 {% block main %}
-    <h1>Game of Life</h1>
-        {% if g.user['progress'] > 0 and g.user['end'] == False %}
-            <a class="btn btn-primary" href="{{ url_for('game_of_life.scenarios',scenario=g.user['progress']) }}">
-                Continue
-            </a>
-        {% elif g.user['end'] == True %}
-            <a class="btn btn-primary" href="{{ url_for('game_of_life.end') }}">
-                Go to the ending
-            </a>
-        {% else %}
-            {{ forms.decisions("play", "Play") }}
-        {% endif %}
+    <div class="text-center center-content">
+        <h1 class="bg-maybank">Game of Life</h1>
+            {% if g.user['progress'] > 0 and g.user['end'] == False %}
+                <a class="btn btn-primary" href="{{ url_for('game_of_life.scenarios',scenario=g.user['progress']) }}">
+                    Continue
+                </a>
+            {% elif g.user['end'] == True %}
+                <a class="btn btn-primary" href="{{ url_for('game_of_life.end') }}">
+                    Go to the ending
+                </a>
+            {% else %}
+                {{ forms.decisions("play", "Play") }}
+            {% endif %}
+    </div>
 {% endblock %}

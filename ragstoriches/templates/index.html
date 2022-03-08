@@ -5,7 +5,10 @@
 {% endblock %}
 
 {% block main %}
-    <h1>Rags to Riches</h1>
-    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum recusandae ipsa in adipisci dolorem praesentium eaque. Distinctio quo veritatis numquam.</p>
-    <a href="{{ url_for('game_of_life.begin') }}" class="btn btn-primary">Start</a>
+    <div class="text-center center-content">
+        <!-- <span class="bg-maybank" style="font-size: calc(1.375rem + 1.5vw);">Rags to Riches</span> -->
+        <h1 class="bg-maybank">Rags to Riches</h1>
+        <p>An ICMS collaborative project</p>
+        <a href="{{ url_for('game_of_life.begin') }}" class="btn btn-primary">Start</a>
+    </div>
 {% endblock %}
