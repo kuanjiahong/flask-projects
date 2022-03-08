@@ -42,4 +42,4 @@ MongoDB Atlas Free tier
 
 ## Some problems
 
-1. For some reason `tests_factory.py` has some problem
+1. For some reason `test_factory.py` has some problem
