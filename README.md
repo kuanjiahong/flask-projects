@@ -38,3 +38,8 @@ MongoDB Atlas Free tier
 1. [How to create and activate Python virtual enviroment](https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/#creating-a-virtual-environment)
 2. [Flask 2.0.2](https://flask.palletsprojects.com/en/2.0.x/)
 3. [MongoDB Atlas](https://www.mongodb.com/)
+
+
+## Some problems
+
+1. For some reason `tests_factory.py` has some problem
